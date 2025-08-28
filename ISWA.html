@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevFlix - Skills & Projects</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --netflix-red: #e50914;
+            --netflix-dark: #141414;
+            --netflix-gray: #2f2f2f;
+        }
+        
+        body {
+            background-color: var(--netflix-dark);
+            color: #fff;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            padding-top: 70px;
+        }
+        
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.8) !important;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 0.5rem 1rem;
+        }
+        
+        .navbar-brand {
+            color: var(--netflix-red) !important;
+            font-weight: bold;
+            font-size: 1.8rem;
+        }
+        
+        .nav-link {
+            color: #fff !important;
+        }
+        
+        .hero-section {
+            height: 80vh;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7));
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .skill-row {
+            margin: 40px 0;
+        }
+        
+        .skill-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+            padding-left: 15px;
+        }
+        
+        .projects-container {
+            display: flex;
+            overflow-x: auto;
+            padding: 15px;
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        .projects-container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Edge */
+        }
+        
+        .project-card {
+            background-color: var(--netflix-gray);
+            border-radius: 4px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            flex: 0 0 auto;
+            width: 300px;
+            margin-right: 15px;
+        }
+        
+        .project-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+        
+        .project-img {
+            height: 180px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            color: white;
+            font-weight: bold;
+        }
+        
+        .project-info {
+            padding: 15px;
+        }
+        
+        .project-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .project-desc {
+            font-size: 0.9rem;
+            color: #d2d2d2;
+            margin-bottom: 10px;
+        }
+        
+        .project-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .skill-tag {
+            background-color: var(--netflix-red);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.75rem;
+        }
+        
+        .skills-nav {
+            background-color: rgba(20, 20, 20, 0.95);
+            padding: 15px 0;
+            position: sticky;
+            top: 60px;
+            z-index: 90;
+        }
+        
+        .skill-pill {
+            background-color: var(--netflix-gray);
+            color: #fff;
+            border-radius: 20px;
+            padding: 8px 20px;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .skill-pill:hover, .skill-pill.active {
+            background-color: var(--netflix-red);
+        }
+        
+        .skills-scroll {
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        .skills-scroll::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Edge */
+        }
+        
+        footer {
+            background-color: #000;
+            padding: 40px 0;
+            margin-top: 50px;
+        }
+        
+        .btn-netflix {
+            background-color: var(--netflix-red);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .btn-netflix:hover {
+            background-color: #f40612;
+            color: white;
+        }
+        
+        /* Loading animation for filtered content */
+        .fade-in {
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#">DevFlix</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon text-white">☰</span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Skills</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2 bg-dark text-light" type="search" placeholder="Search projects...">
+                    <button class="btn btn-outline-light" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="display-4 fw-bold">Showcase Your Developer Skills</h1>
+                <p class="lead">Browse projects by technology, framework, or programming language. Find inspiration for your next portfolio piece.</p>
+                <button class="btn btn-danger btn-lg">Explore All Projects</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Navigation -->
+    <div class="skills-nav">
+        <div class="container">
+            <div class="skills-scroll">
+                <div class="skill-pill active" data-filter="all">All Skills</div>
+                <div class="skill-pill" data-filter="javascript">JavaScript</div>
+                <div class="skill-pill" data-filter="react">React</div>
+                <div class="skill-pill" data-filter="node">Node.js</div>
+                <div class="skill-pill" data-filter="python">Python</div>
+                <div class="skill-pill" data-filter="html">HTML/CSS</div>
+                <div class="skill-pill" data-filter="vue">Vue.js</div>
+                <div class="skill-pill" data-filter="angular">Angular</div>
+                <div class="skill-pill" data-filter="php">PHP</div>
+                <div class="skill-pill" data-filter="wordpress">WordPress</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Projects by Skill -->
+    <div class="container mt-5">
+        <!-- JavaScript Projects -->
+        <div class="skill-row" data-category="javascript">
+            <h2 class="skill-title">JavaScript Projects</h2>
+            <div class="projects-container">
+                <div class="project-card">
+                    <div class="project-img">JavaScript Project</div>
+                    <div class="project-info">
+                        <h3 class="project-title">Interactive Quiz App</h3>
+                        <p class="project-desc">A dynamic quiz application with score tracking and timer.</p>
+                        <div class="project-skills">
+                            <span class="skill-tag">JavaScript</span>
+                            <span class="skill-tag">HTML/CSS</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-img">JavaScript Project</div>
+                    <div class="project-info">
+                        <h3 class="project-title">Weather Dashboard</h3>
+                        <p class="project-desc">Real-time weather information with 5-day forecast.</p>
+                        <div class="project-skills">
+                            <span class="skill-tag">JavaScript</span>
+                            <span class="skill-tag">API</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-img">JavaScript Project</div>
+                    <div class="project-info">
+                        <h3 class="project-title">E-commerce Cart</h3>
+                        <p class="project-desc">Shopping cart with product filtering and checkout process.</p>
+                        <div class="project-skills">
+                            <span class="skill-tag">JavaScript</span>
+                            <span class="skill-tag">UI/UX</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-img">JavaScript Project</div>
+                    <div class="project-info">
+                        <h3 class="project-title">Task Manager</h3>
+                        <p class="project-desc">Drag and drop task management application with local storage.</p>
+                        <div class="project-skills">
+                            <span class="skill-tag">JavaScript</span>
+                            <span class="skill-tag">LocalStorage</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-img">JavaScript Project</div>
+                    <div class="project-info">
+                        <h3 class="project-title">Image Gallery</h3>
+                        <p class="project-desc">Filterable image gallery with lightbox feature.</p>
+                        <div class="project-skills">
+                            <span class="skill-tag">JavaScript</span>
+                            <span class="skill-tag">CSS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- React Projects -->
+        <div class="skill-row" data-category="react">
+            <h2 class="skill-title">React Projects</h2>
+            <div class="projects-container">
+                <div class="project-card">
+                    <div class="project-img">React Project</div>
+                    <div class="project-info">
+                        <h3 class="project-title">Social Media Dashboard</h3>
+                        <p class="project-desc">Responsive dashboard with real-time updates and charts.</p>
+                        <div class="project-skills">
+                            <span class="skill-tag">React</span>
+                            <span class="skill-tag">Chart.js</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-img">React Project</div>
+                    <div class="project-info">
+                        <h3 class="project-title">Movie Database</h3>
+                        <p class="project-desc">Browse movies with filtering, search, and favorites feature.</p>
+                        <div class="project-skills">
+                            <span class="skill-tag">React</span>
+                            <span class="skill-tag">API</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-img">React Project</div>
+                    <div class="project-info">
+                        <h3 class="project-title">Fitness Tracker</h3>
+                        <p class="project-desc">Track workouts and progress with data visualization.</p>
+                        <div class="project-skills">
+                            <span class="skill-tag">React</span>
+                            <span class="skill-tag">D3.js</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-img">React Project</div>
+                    <div class="project-info">
+                        <h3 class="project-title">Recipe Finder</h3>
+                        <p class="project-desc">Find recipes based on ingredients with dietary filters.</p>
+                        <div class="project-skills">
+                            <span class="skill-tag">React</span>
+                            <span class="skill-tag">Redux</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Node.js Projects -->
+        <div class="skill-row" data-category="node">
+            <h2 class="skill-title">Node.js Projects</h2>
+            <div class="projects-container">
+                <div class="project-card">
+                    <div class="project-img">Node.js Project</div>
+                    <div class="project-info">
+                        <h3 class="project-title">RESTful API</h3>
+                        <p class="project-desc">CRUD operations with authentication and authorization.</p>
+                        <div class="project-skills">
+                            <span class="skill-tag">Node.js</span>
+                            <span class="skill-tag">Express</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-img">Node.js Project</div>
+                    <div class="project-info">
+                        <h3 class="project-title">Chat Application</h3>
+                        <p class="project-desc">Real-time messaging with Socket.io and room functionality.</p>
+                        <div class="project-skills">
+                            <span class="skill-tag">Node.js</span>
+                            <span class="skill-tag">Socket.io</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-img">Node.js Project</div>
+                    <div class="project-info">
+                        <h3 class="project-title">E-commerce Backend</h3>
+                        <p class="project-desc">Complete e-commerce API with payment integration.</p>
+                        <div class="project-skills">
+                            <span class="skill-tag">Node.js</span>
+                            <span class="skill-tag">MongoDB</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-img">Node.js Project</div>
+                    <div class="project-info">
+                        <h3 class="project-title">URL Shortener</h3>
+                        <p class="project-desc">Service to shorten URLs with analytics dashboard.</p>
+                        <div class="project-skills">
+                            <span class="skill-tag">Node.js</span>
+                            <span class="skill-tag">MySQL</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Python Projects -->
+        <div class="skill-row" data-category="python">
+            <h2 class="skill-title">Python Projects</h2>
+            <div class="projects-container">
+                <div class="project-card">
+                    <div class="project-img">Python Project</div>
+                    <div class="project-info">
+                        <h3 class="project-title">Data Analysis Tool</h3>
+                        <p class="project-desc">Analyze and visualize datasets with various algorithms.</p>
+                        <div class="project-skills">
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">Pandas</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-img">Python Project</div>
+                    <div class="project-info">
+                        <h3 class="project-title">Web Scraper</h3>
+                        <p class="project-desc">Extract data from websites and export to various formats.</p>
+                        <div class="project-skills">
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">BeautifulSoup</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>DevFlix</h5>
+                    <p>Showcasing developer skills and projects in a Netflix-inspired interface.</p>
+                </div>
+                <div class="col-md-2">
+                    <h5>Skills</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none">JavaScript</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">React</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Node.js</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Python</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2">
+                    <h5>Projects</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none">Web Applications</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Mobile Apps</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">APIs</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Games</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Subscribe to Newsletter</h5>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control bg-dark text-light" placeholder="Your email">
+                        <button class="btn btn-danger" type="button">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="bg-secondary">
+            <div class="text-center">
+                <p>© 2023 DevFlix. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Skill filtering functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const skillPills = document.querySelectorAll('.skill-pill');
+            const skillRows = document.querySelectorAll('.skill-row');
+            
+            skillPills.forEach(pill => {
+                pill.addEventListener('click', function() {
+                    // Remove active class from all pills
+                    skillPills.forEach(p => p.classList.remove('active'));
+                    
+                    // Add active class to clicked pill
+                    this.classList.add('active');
+                    
+                    // Get the filter value
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // Filter the projects
+                    skillRows.forEach(row => {
+                        if (filter === 'all') {
+                            row.style.display = 'block';
+                        } else {
+                            if (row.getAttribute('data-category') === filter) {
+                                row.style.display = 'block';
+                            } else {
+                                row.style.display = 'none';
+                            }
+                        }
+                    });
+                });
+            });
+            
+            // Simulate loading for demonstration
+            const projectsContainers = document.querySelectorAll('.projects-container');
+            projectsContainers.forEach(container => {
+                container.classList.add('fade-in');
+            });
+        });
+    </script>
+</body>
+</html>

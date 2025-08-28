@@ -1,0 +1,9 @@
+*{margin: 0;
+padding: 0;}
+.red{background-color: rgb(23, 97, 57);}
+        #point{background-color: red;
+        color: antiquewhite;}
+        .text{color:aqua;}
+    #exp{background-image: url(death\ note.jpeg);}
+    .boxmodel{margin: 10 2 2 2 ;
+    border: 10px solid gray;}
